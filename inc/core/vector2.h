@@ -28,13 +28,13 @@ namespace Base
 
 	public:
 
-		inline CThis& operator = (CThis& _rRight);
+		inline CThis& operator = (CThis const& _rRight);
 
 	public:
 
 		inline T& operator [] (int _Index);
 		inline const T& operator [] (int _Index) const;
-		
+
 	public:
 		inline bool operator == (const CThis& _rRight) const;
 
@@ -88,7 +88,7 @@ namespace Base
 	// -----------------------------------------------------------------------------
 
 	template<typename T>
-	inline typename CVector2<T>::CThis& CVector2<T>::operator = (CThis& _rRight)
+	inline typename CVector2<T>::CThis& CVector2<T>::operator = (CThis const& _rRight)
 	{
 		m_V[0] = _rRight[0];
 		m_V[1] = _rRight[1];

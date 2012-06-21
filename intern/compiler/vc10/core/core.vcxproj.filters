@@ -6,16 +6,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\core\spline.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\inc\core\spline.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\inc\core\vector2.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\cubic_spline.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\core\cubic_spline.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

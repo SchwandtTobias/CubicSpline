@@ -10,24 +10,28 @@ namespace Core
 {
 namespace Math
 {
-	class CSpline
+	class CCubicSpline
 	{
 	public:
 
 		void AddPoint(Float2& _rNewPoint);
-        float CubicInterpolation(float _XPos);
+        float Interpolate(float _XPos);
 
     private:
 
         typedef std::vector<Float2>     CPoints;
         typedef CPoints::const_iterator CPointInterator;
 
+        typedef std::vector<float>      CZ;
+
     private:
 
         CPoints m_Points;
+        CZ      m_Z;
 
     private:
-        float CalculateCubic(float _XPos);
+        void BuildCoef();
+        float Interp(float _XPos);
 	};
 } // namespace Math
 } // namespace Core

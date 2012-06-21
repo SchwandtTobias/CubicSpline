@@ -1,12 +1,12 @@
 
 
 #include "core/vector2.h"
-#include "core/spline.h"
+#include "core/cubic_spline.h"
 
 
 int main()
 {
-    Core::Math::CSpline MyCubicSpline;
+    Core::Math::CCubicSpline MyCubicSpline;
 
     Core::Float2 P1(-1, 2);
     Core::Float2 P2( 0, 1);
@@ -18,7 +18,7 @@ int main()
     MyCubicSpline.AddPoint(P3);
     MyCubicSpline.AddPoint(P4);
 
-    float Ret = MyCubicSpline.CubicInterpolation(0.8f);
+    float Ret = MyCubicSpline.Interpolate(0.5f);
 
 	return 0;
 }
