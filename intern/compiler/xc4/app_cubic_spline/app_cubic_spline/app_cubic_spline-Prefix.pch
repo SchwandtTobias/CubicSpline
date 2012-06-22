@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'app_cubic_spline' target in the 'app_cubic_spline' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

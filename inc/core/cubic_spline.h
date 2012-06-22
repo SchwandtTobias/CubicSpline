@@ -16,6 +16,9 @@ namespace Math
 
 		void AddPoint(Float2& _rNewPoint);
         float Interpolate(float _XPos);
+        
+        float MinX();
+        float MaxX();
 
     private:
 
@@ -28,6 +31,9 @@ namespace Math
 
         CPoints m_Points;
         CZ      m_Z;
+        
+        float   m_MinX;
+        float   m_MaxX;
 
     private:
         void BuildCoef();

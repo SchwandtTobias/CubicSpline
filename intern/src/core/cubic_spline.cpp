@@ -14,6 +14,13 @@ namespace Math
         // -----------------------------------------------------------------------------        
         m_Points.push_back(_rNewPoint);
         m_Z.push_back(0.0f);
+        
+        if (m_MinX > _rNewPoint[0]) {
+            m_MinX = _rNewPoint[0];
+        }
+        else if (m_MaxX < _rNewPoint[0]) {
+            m_MaxX = _rNewPoint[0];
+        }
 
         BuildCoef();
     }
@@ -23,6 +30,20 @@ namespace Math
     float CCubicSpline::Interpolate(float _XPos)
     {
         return Interp(_XPos);
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    float CCubicSpline::MinX()
+    {
+        return m_MinX;
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    float CCubicSpline::MaxX()
+    {
+        return m_MaxX;
     }
 
     // -----------------------------------------------------------------------------
