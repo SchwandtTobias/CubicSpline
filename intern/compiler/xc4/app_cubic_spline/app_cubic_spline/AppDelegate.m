@@ -14,6 +14,7 @@
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize managedObjectContext = __managedObjectContext;
+@synthesize pointList = _pointList;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {

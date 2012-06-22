@@ -20,11 +20,11 @@
 - (void)mouseUp:(NSEvent *)theEvent
 {
     CGPoint touchLocation = [theEvent locationInWindow];
-    Core::Float2 TouchPoint(touchLocation.x - 20, touchLocation.y - 20);
+    Core::Float2 TouchPoint(touchLocation.x, touchLocation.y);
     
     NSPoint pPoint;
-    pPoint.x = touchLocation.x - 20;
-    pPoint.y = touchLocation.y - 20;
+    pPoint.x = touchLocation.x;
+    pPoint.y = touchLocation.y;
     
     [m_pPoints addObject:[NSValue valueWithPoint:pPoint]];
     
@@ -61,10 +61,10 @@
         //draw points
 
         NSValue* pValue = (NSValue*)obj;
-        NSPoint pPoint = [pValue pointValue];
+        NSPoint Point = [pValue pointValue];
         
         
-        NSRect rect = NSMakeRect(pPoint.x, pPoint.y, 10, 10);
+        NSRect rect = NSMakeRect(Point.x, Point.y, 5, 5);
         NSBezierPath* circlePath = [NSBezierPath bezierPath];
         [circlePath appendBezierPathWithOvalInRect: rect];
         
@@ -75,17 +75,27 @@
     
     
     //draw interpolation
-    for (float i = m_CubicSpline.MinX(); i < m_CubicSpline.MaxX(); i+=0.5f) 
+    CGContextSetRGBStrokeColor(context, 0.0, 0.6, 1.0, 1.0);
+    
+    Core::Float2 LastPoint;
+    Core::Float2 ActualPoint;
+    
+    for (float x = m_CubicSpline.MinX(); x < m_CubicSpline.MaxX(); x += 3.0f) 
     {
-        float y = m_CubicSpline.Interpolate(i);
+        float y = m_CubicSpline.Interpolate(x);
         
-        NSRect rect = NSMakeRect(i, y, 2, 2);
-        NSBezierPath* circlePath = [NSBezierPath bezierPath];
-        [circlePath appendBezierPathWithOvalInRect: rect];
+        ActualPoint[0] = x;
+        ActualPoint[1] = y;
         
-        // Outline and fill the path
-        CGContextSetRGBFillColor(context, 0.0, 1.0, 0.0, 1.0);
-        [circlePath fill];
+        if (ActualPoint[0] > m_CubicSpline.MinX()) 
+        {
+            CGContextBeginPath(context);
+            CGContextMoveToPoint(context, LastPoint[0], LastPoint[1]);
+            CGContextAddLineToPoint(context, ActualPoint[0], ActualPoint[1]);
+            CGContextStrokePath(context);
+        }
+        
+        LastPoint = ActualPoint;
     }
     
     

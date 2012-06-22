@@ -37,6 +37,7 @@ namespace Base
 
 	public:
 		inline bool operator == (const CThis& _rRight) const;
+        inline bool operator != (const CThis& _rRight) const;
 
 	private:
 		T m_V[s_MaxNumberOfElements];
@@ -122,6 +123,18 @@ namespace Base
 
 		IsEqual = m_V[0] == _rRight[0] && m_V[1] == _rRight[1];
 
+		return IsEqual;
+	}
+    
+    // -----------------------------------------------------------------------------
+    
+	template<typename T>
+	inline bool CVector2<T>::operator != (const CThis& _rRight) const
+	{
+		bool IsEqual;
+        
+		IsEqual = m_V[0] != _rRight[0] && m_V[1] != _rRight[1];
+        
 		return IsEqual;
 	}
 } // namespace Base

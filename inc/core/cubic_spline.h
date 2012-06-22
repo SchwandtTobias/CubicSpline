@@ -19,6 +19,8 @@ namespace Math
         
         float MinX();
         float MaxX();
+        
+        int SizeOfPoints();
 
     private:
 
@@ -34,6 +36,8 @@ namespace Math
         
         float   m_MinX;
         float   m_MaxX;
+        
+        bool    m_Dirty;
 
     private:
         void BuildCoef();
