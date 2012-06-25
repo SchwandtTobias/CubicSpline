@@ -1,24 +1,29 @@
 
 
-#include "core/vector2.h"
-#include "core/cubic_spline.h"
+#include "core/function.h"
+
+#include <iostream>
+
+
+class MyFunction : public Core::Math::IFunction1Base
+{
+public:
+    float func(float _Value)
+    {
+        return _Value * _Value;
+    }
+};
 
 
 int main()
 {
-    Core::Math::CCubicSpline MyCubicSpline;
-
-    Core::Float2 P1(-1, 2);
-    Core::Float2 P2( 0, 1);
-    Core::Float2 P3( 1, 2);
-    Core::Float2 P4( 2, 1);
-
-    MyCubicSpline.AddPoint(P1);
-    MyCubicSpline.AddPoint(P2);
-    MyCubicSpline.AddPoint(P3);
-    MyCubicSpline.AddPoint(P4);
-
-    float Ret = MyCubicSpline.Interpolate(0.5f);
+    MyFunction Function;
+    
+    std::cout << Function.func(0) << std::endl;
+    std::cout << Function.func1(4) << std::endl;
+    std::cout << Function.func2(1) << std::endl;
+    
+    std::cout << Function.Area(0, 1) << std::endl;
 
 	return 0;
 }

@@ -1,3 +1,7 @@
+//
+//  Created by Tobias Schwandt.
+//  Copyright (c) 2012 Zebresel. All rights reserved.
+//
 
 #pragma once
 
@@ -5,8 +9,6 @@
 namespace Core
 {
 namespace Math
-{
-namespace Base
 {
 	template<typename T>
 	class CVector2
@@ -42,7 +44,6 @@ namespace Base
 	private:
 		T m_V[s_MaxNumberOfElements];
 	};
-} // namespace Base
 } // namespace Math
 } // namespace Core
 
@@ -50,8 +51,6 @@ namespace Base
 namespace Core
 {
 namespace Math
-{
-namespace Base
 {
 	template<typename T>
 	CVector2<T>::CVector2()
@@ -137,7 +136,6 @@ namespace Base
         
 		return IsEqual;
 	}
-} // namespace Base
 } // namespace Math
 } // namespace Core
 
@@ -145,7 +143,10 @@ namespace Base
 
 namespace Core
 {
-	typedef Math::Base::CVector2<int>    Int2;
-	typedef Math::Base::CVector2<float>  Float2;
-	typedef Math::Base::CVector2<double> Double2;
+namespace Math
+{
+	typedef CVector2<int>    Int2;
+	typedef CVector2<float>  Float2;
+	typedef CVector2<double> Double2;
+} // namespace Math
 } // namespace Core

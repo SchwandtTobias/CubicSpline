@@ -20,7 +20,7 @@
 - (void)mouseUp:(NSEvent *)theEvent
 {
     CGPoint touchLocation = [theEvent locationInWindow];
-    Core::Float2 TouchPoint(touchLocation.x, touchLocation.y);
+    Core::Math::Float2 TouchPoint(touchLocation.x, touchLocation.y);
     
     NSPoint pPoint;
     pPoint.x = touchLocation.x;
@@ -64,7 +64,7 @@
         NSPoint Point = [pValue pointValue];
         
         
-        NSRect rect = NSMakeRect(Point.x, Point.y, 5, 5);
+        NSRect rect = NSMakeRect(Point.x - 2.5, Point.y - 2.5, 5, 5);
         NSBezierPath* circlePath = [NSBezierPath bezierPath];
         [circlePath appendBezierPathWithOvalInRect: rect];
         
@@ -77,8 +77,8 @@
     //draw interpolation
     CGContextSetRGBStrokeColor(context, 0.0, 0.6, 1.0, 1.0);
     
-    Core::Float2 LastPoint;
-    Core::Float2 ActualPoint;
+    Core::Math::Float2 LastPoint;
+    Core::Math::Float2 ActualPoint;
     
     for (float x = m_CubicSpline.MinX(); x < m_CubicSpline.MaxX(); x += 3.0f) 
     {
