@@ -21,7 +21,6 @@ int main()
     
     std::cout << Function.func(0) << std::endl;
     std::cout << Function.func1(4) << std::endl;
-    std::cout << Function.func2(1) << std::endl;
     
     std::cout << Function.Area(0, 1) << std::endl;
 

@@ -16,13 +16,6 @@ namespace Math
     
     // -----------------------------------------------------------------------------
     
-    float IFunction1Base::func2(float _Value0)
-    {
-        return ((func1(_Value0 + s_H) - func1(_Value0)) / s_H);
-    }
-    
-    // -----------------------------------------------------------------------------
-    
     float IFunction1Base::funcx(float _Value0, float (*_pFunc)(const float))
     {
         return ((_pFunc(_Value0 + s_H) - _pFunc(_Value0)) / s_H);

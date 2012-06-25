@@ -20,7 +20,6 @@ namespace Math
         
     public:
         float func1(float _Value0);
-        float func2(float _Value0);
         float funcx(float _Value0, float (*_pFunc)(const float));
         
         float Area(float _Start, float _End);

@@ -34,12 +34,18 @@ namespace Math
 
 	public:
 
-		inline T& operator [] (int _Index);
-		inline const T& operator [] (int _Index) const;
+		inline T& operator [] (const int _Index);
+		inline const T& operator [] (const int _Index) const;
 
 	public:
 		inline bool operator == (const CThis& _rRight) const;
         inline bool operator != (const CThis& _rRight) const;
+        
+        inline bool operator <  (const CThis& _rRight) const;
+        inline bool operator <= (const CThis& _rRight) const;
+        
+        inline bool operator >  (const CThis& _rRight) const;
+        inline bool operator >= (const CThis& _rRight) const;
 
 	private:
 		T m_V[s_MaxNumberOfElements];
@@ -100,7 +106,7 @@ namespace Math
 	// -----------------------------------------------------------------------------
 
 	template<typename T>
-	inline T& CVector2<T>::operator [] (int _Index)
+	inline T& CVector2<T>::operator [] (const int _Index)
 	{
 		return m_V[_Index];
 	}
@@ -108,7 +114,7 @@ namespace Math
 	// -----------------------------------------------------------------------------
 
 	template<typename T>
-	inline const T& CVector2<T>::operator [] (int _Index) const
+	inline const T& CVector2<T>::operator [] (const int _Index) const
 	{
 		return m_V[_Index];
 	}
@@ -120,7 +126,7 @@ namespace Math
 	{
 		bool IsEqual;
 
-		IsEqual = m_V[0] == _rRight[0] && m_V[1] == _rRight[1];
+		IsEqual = m_V[0] == _rRight.m_V[0] && m_V[1] == _rRight.m_V[1];
 
 		return IsEqual;
 	}
@@ -132,10 +138,58 @@ namespace Math
 	{
 		bool IsEqual;
         
-		IsEqual = m_V[0] != _rRight[0] && m_V[1] != _rRight[1];
+		IsEqual = m_V[0] != _rRight.m_V[0] && m_V[1] != _rRight.m_V[1];
         
 		return IsEqual;
 	}
+    
+    // -----------------------------------------------------------------------------
+    
+    template<typename T>
+    inline bool CVector2<T>::operator <  (const CThis& _rRight) const
+    {
+        bool IsSmaller;
+        
+        IsSmaller = m_V[0] < _rRight.m_V[0];
+        
+        return IsSmaller;
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    template<typename T>
+    inline bool CVector2<T>::operator <= (const CThis& _rRight) const
+    {
+        bool IsSmallerEqual;
+        
+        IsSmallerEqual = m_V[0] <= _rRight.m_V[0];
+        
+        return IsSmallerEqual;
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    template<typename T>
+    inline bool CVector2<T>::operator >  (const CThis& _rRight) const
+    {
+        bool IsGreater;
+        
+        IsGreater = m_V[0] > _rRight.m_V[0];
+        
+        return IsGreater;
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    template<typename T>
+    inline bool CVector2<T>::operator >= (const CThis& _rRight) const
+    {
+        bool IsGreaterEqual;
+        
+        IsGreaterEqual = m_V[0] >= _rRight.m_V[0];
+        
+        return IsGreaterEqual;
+    }
 } // namespace Math
 } // namespace Core
 

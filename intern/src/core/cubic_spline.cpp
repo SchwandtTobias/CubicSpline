@@ -18,13 +18,13 @@ namespace Math
         // -----------------------------------------------------------------------------        
         m_Points.push_back(_rNewPoint);
         
-        
         // -----------------------------------------------------------------------------
         // Check some spline rules
         // -----------------------------------------------------------------------------
         float AddXValue = _rNewPoint[0];
         
-        if (m_Points.size() == 1) {
+        if (m_Points.size() == 1) 
+        {
             m_MinX = AddXValue;
             m_MaxX = AddXValue;
         }
@@ -41,11 +41,11 @@ namespace Math
         }
         
         // -----------------------------------------------------------------------------
-        // sort array because on
+        // sort array because on wrong calculation
         // -----------------------------------------------------------------------------
         if (NeedSort == true) 
         {
-            //std::sort(m_Points.begin(), m_Points.end());
+            std::sort(m_Points.begin(), m_Points.end());
         }
         
         // -----------------------------------------------------------------------------
@@ -158,7 +158,8 @@ namespace Math
         // -----------------------------------------------------------------------------
         // build coef if points has changed
         // -----------------------------------------------------------------------------
-        if (m_Dirty) {
+        if (m_Dirty) 
+        {
             BuildCoef();
             m_Dirty = false;
         }
@@ -177,6 +178,7 @@ namespace Math
         {
             if (_XPos - m_Points[i][0] >= 0)
             {
+                //if last x-value is found
                 break;
             }
         }
