@@ -1,5 +1,8 @@
 #pragma once
 
+#include "core/cubic_spline.h"
+#include "core/vector2.h"
+
 namespace app_cubic_spline {
 
 	using namespace System;
@@ -42,7 +45,7 @@ namespace app_cubic_spline {
     protected: 
 
     private:
-        Core::Math::CCubicSpline m_CubicSpline;
+        Core::Math::CCubicSpline* m_pCubicSpline;
 
     private:
         void DrawSpline()
@@ -77,6 +80,7 @@ namespace app_cubic_spline {
             this->panel_draw->Size = System::Drawing::Size(617, 538);
             this->panel_draw->TabIndex = 0;
             this->panel_draw->Click += gcnew System::EventHandler(this, &Form1::panel_draw_Click);
+            this->panel_draw->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Form1::panel_draw_Paint);
             this->panel_draw->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::panel_draw_MouseClick);
             // 
             // bInterpolate
@@ -102,6 +106,7 @@ namespace app_cubic_spline {
         }
 #pragma endregion
     private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
+                 m_pCubicSpline = new Core::Math::CCubicSpline();
              }
     private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
              }
@@ -111,12 +116,12 @@ namespace app_cubic_spline {
                  // -----------------------------------------------------------------------------
                  // add click to panel and spline
                  // -----------------------------------------------------------------------------
-                 Core::Float2 ClickPoint;
+                 Core::Math::Float2 ClickPoint;
 
                  ClickPoint[0] = e->Location.X;
                  ClickPoint[1] = e->Location.Y;
 
-                 m_CubicSpline.AddPoint(ClickPoint);
+                 m_pCubicSpline->AddPoint(ClickPoint);
 
 
                  // -----------------------------------------------------------------------------
@@ -124,6 +129,8 @@ namespace app_cubic_spline {
                  // -----------------------------------------------------------------------------
                  DrawSpline();
              }
+private: System::Void panel_draw_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
+         }
 };
 }
 

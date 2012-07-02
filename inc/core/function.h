@@ -25,8 +25,8 @@ namespace Math
         float Area(float _Start, float _End);
         
     private:
-        static const float s_Interval = 0.5f;
-        static const float s_H        = 0.00001f;
+        static const float s_Interval;
+        static const float s_H;
     };    
 }// namespace Math
 }// namespace Core

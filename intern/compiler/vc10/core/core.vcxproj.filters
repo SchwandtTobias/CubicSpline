@@ -4,6 +4,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{4b58aac9-d0a2-4f86-87a3-95c33d8020df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{9900324b-7901-44dc-92ac-0a2dec3c8688}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\inc\core\vector2.h">
@@ -12,9 +15,39 @@
     <ClInclude Include="..\..\..\..\inc\core\cubic_spline.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\function.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\matrix2x2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\matrix3x3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\matrix4x4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\search_text.h">
+      <Filter>Text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\core\cubic_spline.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\search_text.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\function.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\matrix2x2.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\matrix3x3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\matrix4x4.cpp">
       <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>

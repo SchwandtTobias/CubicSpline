@@ -9,6 +9,11 @@ namespace Core
 {
 namespace Math
 {
+
+    const float IFunction1Base::s_Interval = 0.5f;
+    const float IFunction1Base::s_H        = 0.00001f;
+
+
     float IFunction1Base::func1(float _Value0)
     {
         return ((func(_Value0 + s_H) - func(_Value0)) / s_H);
