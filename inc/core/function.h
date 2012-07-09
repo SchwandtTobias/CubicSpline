@@ -20,9 +20,12 @@ namespace Math
         
     public:
         float func1(float _Value0);
-        float funcx(float _Value0, float (*_pFunc)(const float));
+        float func2(float _Value0);
         
         float Area(float _Start, float _End);
+        
+        float Root(float _Start);
+        float Minima(float _Start, float _End);
         
     private:
         static const float s_Interval;

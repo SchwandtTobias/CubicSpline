@@ -7,36 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F32A22A515A828790081F8F8 /* math_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = F32A22A415A828790081F8F8 /* math_defines.h */; };
 		F34DE9DA1594784C0097B2A8 /* cubic_spline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F34DE9D91594784C0097B2A8 /* cubic_spline.cpp */; };
 		F34DE9DD1594785C0097B2A8 /* cubic_spline.h in Headers */ = {isa = PBXBuildFile; fileRef = F34DE9DB1594785C0097B2A8 /* cubic_spline.h */; };
 		F34DE9DE1594785C0097B2A8 /* vector2.h in Headers */ = {isa = PBXBuildFile; fileRef = F34DE9DC1594785C0097B2A8 /* vector2.h */; };
+		F39A473815AB4C880023101A /* matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = F39A473615AB4C880023101A /* matrix.h */; };
+		F39A473915AB4C880023101A /* vector.h in Headers */ = {isa = PBXBuildFile; fileRef = F39A473715AB4C880023101A /* vector.h */; };
 		F3C5EA1D15974908007B6698 /* search_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3C5EA1C15974908007B6698 /* search_text.cpp */; };
 		F3C5EA1F15974910007B6698 /* search_text.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C5EA1E15974910007B6698 /* search_text.h */; };
 		F3C5EA2215974B1C007B6698 /* function.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C5EA2115974B1C007B6698 /* function.h */; };
 		F3C5EA2415974B33007B6698 /* function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3C5EA2315974B33007B6698 /* function.cpp */; };
-		F3C5EA2715975293007B6698 /* matrix2x2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3C5EA2515975292007B6698 /* matrix2x2.cpp */; };
-		F3C5EA2815975293007B6698 /* matrix3x3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3C5EA2615975293007B6698 /* matrix3x3.cpp */; };
-		F3C5EA2C159752D7007B6698 /* matrix2x2.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C5EA29159752D7007B6698 /* matrix2x2.h */; };
-		F3C5EA2D159752D7007B6698 /* matrix3x3.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C5EA2A159752D7007B6698 /* matrix3x3.h */; };
-		F3C5EA2E159752D7007B6698 /* matrix4x4.h in Headers */ = {isa = PBXBuildFile; fileRef = F3C5EA2B159752D7007B6698 /* matrix4x4.h */; };
-		F3C5EA30159752E3007B6698 /* matrix4x4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3C5EA2F159752E3007B6698 /* matrix4x4.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F32A22A415A828790081F8F8 /* math_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = math_defines.h; path = ../../../../inc/core/math_defines.h; sourceTree = "<group>"; };
 		F34DE9B8159477FF0097B2A8 /* libcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F34DE9D91594784C0097B2A8 /* cubic_spline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cubic_spline.cpp; path = ../../../src/core/cubic_spline.cpp; sourceTree = "<group>"; };
 		F34DE9DB1594785C0097B2A8 /* cubic_spline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cubic_spline.h; path = ../../../../inc/core/cubic_spline.h; sourceTree = "<group>"; };
 		F34DE9DC1594785C0097B2A8 /* vector2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vector2.h; path = ../../../../inc/core/vector2.h; sourceTree = "<group>"; };
+		F39A473615AB4C880023101A /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix.h; path = ../../../../inc/core/matrix.h; sourceTree = "<group>"; };
+		F39A473715AB4C880023101A /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vector.h; path = ../../../../inc/core/vector.h; sourceTree = "<group>"; };
 		F3C5EA1C15974908007B6698 /* search_text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = search_text.cpp; path = ../../../src/core/search_text.cpp; sourceTree = "<group>"; };
 		F3C5EA1E15974910007B6698 /* search_text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = search_text.h; path = ../../../../inc/core/search_text.h; sourceTree = "<group>"; };
 		F3C5EA2115974B1C007B6698 /* function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = function.h; path = ../../../../inc/core/function.h; sourceTree = "<group>"; };
 		F3C5EA2315974B33007B6698 /* function.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = function.cpp; path = ../../../src/core/function.cpp; sourceTree = "<group>"; };
-		F3C5EA2515975292007B6698 /* matrix2x2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrix2x2.cpp; path = ../../../src/core/matrix2x2.cpp; sourceTree = "<group>"; };
-		F3C5EA2615975293007B6698 /* matrix3x3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrix3x3.cpp; path = ../../../src/core/matrix3x3.cpp; sourceTree = "<group>"; };
-		F3C5EA29159752D7007B6698 /* matrix2x2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix2x2.h; path = ../../../../inc/core/matrix2x2.h; sourceTree = "<group>"; };
-		F3C5EA2A159752D7007B6698 /* matrix3x3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix3x3.h; path = ../../../../inc/core/matrix3x3.h; sourceTree = "<group>"; };
-		F3C5EA2B159752D7007B6698 /* matrix4x4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix4x4.h; path = ../../../../inc/core/matrix4x4.h; sourceTree = "<group>"; };
-		F3C5EA2F159752E3007B6698 /* matrix4x4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrix4x4.cpp; path = ../../../src/core/matrix4x4.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,17 +64,14 @@
 		F34DE9DF159478610097B2A8 /* Math */ = {
 			isa = PBXGroup;
 			children = (
+				F39A473615AB4C880023101A /* matrix.h */,
+				F39A473715AB4C880023101A /* vector.h */,
 				F3C5EA2115974B1C007B6698 /* function.h */,
 				F3C5EA2315974B33007B6698 /* function.cpp */,
-				F3C5EA29159752D7007B6698 /* matrix2x2.h */,
-				F3C5EA2515975292007B6698 /* matrix2x2.cpp */,
-				F3C5EA2A159752D7007B6698 /* matrix3x3.h */,
-				F3C5EA2615975293007B6698 /* matrix3x3.cpp */,
-				F3C5EA2B159752D7007B6698 /* matrix4x4.h */,
-				F3C5EA2F159752E3007B6698 /* matrix4x4.cpp */,
 				F34DE9DC1594785C0097B2A8 /* vector2.h */,
 				F34DE9DB1594785C0097B2A8 /* cubic_spline.h */,
 				F34DE9D91594784C0097B2A8 /* cubic_spline.cpp */,
+				F32A22A415A828790081F8F8 /* math_defines.h */,
 			);
 			name = Math;
 			sourceTree = "<group>";
@@ -105,9 +96,9 @@
 				F34DE9DE1594785C0097B2A8 /* vector2.h in Headers */,
 				F3C5EA1F15974910007B6698 /* search_text.h in Headers */,
 				F3C5EA2215974B1C007B6698 /* function.h in Headers */,
-				F3C5EA2C159752D7007B6698 /* matrix2x2.h in Headers */,
-				F3C5EA2D159752D7007B6698 /* matrix3x3.h in Headers */,
-				F3C5EA2E159752D7007B6698 /* matrix4x4.h in Headers */,
+				F32A22A515A828790081F8F8 /* math_defines.h in Headers */,
+				F39A473815AB4C880023101A /* matrix.h in Headers */,
+				F39A473915AB4C880023101A /* vector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,9 +156,6 @@
 				F34DE9DA1594784C0097B2A8 /* cubic_spline.cpp in Sources */,
 				F3C5EA1D15974908007B6698 /* search_text.cpp in Sources */,
 				F3C5EA2415974B33007B6698 /* function.cpp in Sources */,
-				F3C5EA2715975293007B6698 /* matrix2x2.cpp in Sources */,
-				F3C5EA2815975293007B6698 /* matrix3x3.cpp in Sources */,
-				F3C5EA30159752E3007B6698 /* matrix4x4.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

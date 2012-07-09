@@ -5,6 +5,10 @@
 
 #include "core/function.h"
 
+#include "core/math_defines.h"
+
+#include <assert.h>
+
 namespace Core
 {
 namespace Math
@@ -13,6 +17,7 @@ namespace Math
     const float IFunction1Base::s_Interval = 0.5f;
     const float IFunction1Base::s_H        = 0.00001f;
 
+    // -----------------------------------------------------------------------------
 
     float IFunction1Base::func1(float _Value0)
     {
@@ -21,9 +26,9 @@ namespace Math
     
     // -----------------------------------------------------------------------------
     
-    float IFunction1Base::funcx(float _Value0, float (*_pFunc)(const float))
+    float IFunction1Base::func2(float _Value0)
     {
-        return ((_pFunc(_Value0 + s_H) - _pFunc(_Value0)) / s_H);
+        return (func(_Value0 + s_H) + func(_Value0 - s_H) - 2 * func(_Value0)) / (s_H * s_H);
     }
     
     // -----------------------------------------------------------------------------
@@ -57,6 +62,92 @@ namespace Math
         }
         
         return Result;
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    float IFunction1Base::Root(float _Start)
+    {
+        // -----------------------------------------------------------------------------
+        // newton algorithm
+        // -----------------------------------------------------------------------------
+        float xi = _Start;
+        
+        for (;;) 
+        {
+            if (func(xi) < EPSILON) {
+                break;
+            }
+            
+            xi = xi - (func(xi) / func1(xi));
+        }
+        
+        return xi;
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    float IFunction1Base::Minima(float _Start, float _End)
+    {
+        assert(_Start < _End);
+        
+        // -----------------------------------------------------------------------------
+        // golden section
+        // -----------------------------------------------------------------------------
+        float s;
+        
+        float xa;
+        float fa;
+        
+        float xb;
+        float fb;
+        
+        float a;
+        float b;
+        
+        a = _Start;
+        b = _End;
+        
+        s = 0.38196f;
+        
+        xa = a + s * (b - a);
+        fa = func(xa);
+        xb = b - s * (b - a);
+        fb = func(xb);
+        
+        for (;;) 
+        {
+            if (b - a < EPSILON) 
+            {
+                break;
+            }
+            
+            if (fa > fb) 
+            {
+                a  = xa;
+                xa = xb;
+                fa = fb;
+                xb = b - s * (b - a);
+                fb = func(xb);
+            }
+            else 
+            {
+                b  = xb;
+                xb = xa;
+                fb = fa;
+                xa = a + s * (b - a);
+                fa = func(xa);
+            }
+        }
+        
+        if (func(a) > func(b)) 
+        {
+            return b;
+        }
+        else 
+        {
+            return a;
+        }
     }
 }
 }
