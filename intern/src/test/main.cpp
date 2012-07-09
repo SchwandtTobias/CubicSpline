@@ -13,7 +13,7 @@ class MyFunction : public Core::Math::IFunction1Base
 public:
     float func(float _Value)
     {
-        return _Value * _Value;
+        return _Value * _Value - 1;
     }
 };
 
@@ -21,14 +21,16 @@ void TEST_FUNCTION()
 {
     MyFunction Function;
     
-    std::cout << Function.func(0) << std::endl;
-    std::cout << Function.func1(4) << std::endl;
-    std::cout << Function.func2(4) << std::endl;
+    std::cout << "Y bei 0: "             << Function.func(0) << std::endl;
+    std::cout << "Y' bei 4: "            << Function.func1(4) << std::endl;
+    std::cout << "Y'' bei 4: "           << Function.func2(4) << std::endl;
     
-    std::cout << Function.Area(0, 1) << std::endl;
+    std::cout << "Fläche (0 bis 1): "    << Function.Area(0, 1) << std::endl;
     
-    std::cout << Function.Root(-5) << std::endl;
-    std::cout << Function.Minima(-5, 5) << std::endl;
+    std::cout << "Nullstelle (Newton): " << Function.Root(-5) << std::endl;
+    std::cout << "Nullstelle (Bisect): " << Function.Root(0, 5) << std::endl;
+    std::cout << "Nullstelle (Regula): " << Function.RootRegula(0, 5) << std::endl;
+    std::cout << "Minima: "              << Function.Minima(-5, 5) << std::endl;
 }
 
 void TEST_MATRIX()
@@ -44,15 +46,49 @@ void TEST_MATRIX()
     Matrix[6][0] = 0; Matrix[6][1] = 0; Matrix[6][2] = 1; Matrix[6][3] = 0; Matrix[6][4] = 0; Matrix[6][5] = 1; Matrix[6][6] = 0; Matrix[6][7] = 1;
     Matrix[7][0] = 0; Matrix[7][1] = 0; Matrix[7][2] = 0; Matrix[7][3] = 0; Matrix[7][4] = 0; Matrix[7][5] = 1; Matrix[7][6] = 1; Matrix[7][7] = 0;
     
-    bool Gefunden;
+    bool Found;
     
     // Breitensuche
-    Gefunden = Matrix.BreathFistSearch(0, 6);
-    std::cout << "Breitensuche: " << Gefunden << std::endl;
+    Found = Matrix.BreathFistSearch(0, 6);
+    std::cout << "Breitensuche: " << Found << std::endl;
     
     // Tiefensuche
-    Gefunden = Matrix.DepthFirstSearch(0, 4);
-    std::cout << "Tiefensuche: " << Gefunden << std::endl;
+    Found = Matrix.DepthFirstSearch(0, 4);
+    std::cout << "Tiefensuche: " << Found << std::endl;
+
+
+    Core::Math::CMatrix<int, 3, 3> LRMatrix;
+
+    LRMatrix[0][0] = 3; LRMatrix[0][1] = 2;  LRMatrix[0][2] = 1;
+    LRMatrix[1][0] = 6; LRMatrix[1][1] = 6;  LRMatrix[1][2] = 3;
+    LRMatrix[2][0] = 9; LRMatrix[2][1] = 10; LRMatrix[2][2] = 6;
+
+    Core::Math::CMatrix<int, 3, 3> LMatrix;
+    Core::Math::CMatrix<int, 3, 3> RMatrix;
+
+    LRMatrix.TriangularDecomposition(LMatrix, RMatrix);
+
+    std::cout << "R-Matrix" << std::endl;
+    for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < RMatrix.s_MaxNumberOfColumns; ++IndexOfColomnElement)
+    {
+        for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < RMatrix.s_MaxNumberOfColumns; ++IndexOfRowElement)
+        {
+            std::cout << RMatrix[IndexOfColomnElement][IndexOfRowElement] << ";";
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "L-Matrix" << std::endl;
+    for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < LMatrix.s_MaxNumberOfColumns; ++IndexOfColomnElement)
+    {
+        for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < LMatrix.s_MaxNumberOfColumns; ++IndexOfRowElement)
+        {
+            std::cout << LMatrix[IndexOfColomnElement][IndexOfRowElement] << ";";
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "Determinante: " << LRMatrix.Determinate() << std::endl;
 }
 
 

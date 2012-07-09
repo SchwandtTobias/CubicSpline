@@ -3,9 +3,9 @@
 //  Copyright (c) 2012 Zebresel. All rights reserved.
 //
 
-
 #pragma once
 
+#include <assert.h>
 #include <vector>
 
 namespace Core
@@ -18,9 +18,14 @@ namespace Math
 
     public:
 
-        static const unsigned int s_MaxNumberOfRows = TMaxNumberOfRows;
-        static const unsigned int s_MaxNumberOfColumns = TMaxNumberOfColumns;
+        static const unsigned int s_MaxNumberOfRows     = TMaxNumberOfRows;
+        static const unsigned int s_MaxNumberOfColumns  = TMaxNumberOfColumns;
         static const unsigned int s_MaxNumberOfElements = s_MaxNumberOfColumns * s_MaxNumberOfRows;
+
+    public:
+        CMatrix();
+        CMatrix(const CMatrix<TDataTypeOfData, TMaxNumberOfRows,TMaxNumberOfColumns>& _Instance);
+        ~CMatrix(); 
 
     public:
         
@@ -29,10 +34,16 @@ namespace Math
 
     public:
 
+        void TriangularDecomposition(CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _rLowerMatrix, CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _rUpperMatrix);
+        TDataTypeOfData Determinate();
+        int Rang();
+
+    public:
+
         struct SLine 
         {
-                TDataTypeOfData m_Elements[s_MaxNumberOfColumns];
-                TDataTypeOfData& operator [](unsigned int _Index);
+            TDataTypeOfData m_Elements[s_MaxNumberOfColumns];
+            TDataTypeOfData& operator [](unsigned int _Index);
         };
 
     public:
@@ -53,37 +64,67 @@ namespace Core
 namespace Math
 {
     template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::CMatrix()
+    { }
+
+    // -----------------------------------------------------------------------------
+
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::CMatrix(const CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _Instance)
+    {
+        if (s_MaxNumberOfColumns <= _Instance.s_MaxNumberOfColumns && s_MaxNumberOfRows <= _Instance.s_MaxNumberOfRows)
+        {
+            for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+            {
+                for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+                {
+                    _rLowerMatrix[IndexOfColomnElement][IndexOfRowElement] = _Instance[IndexOfColomnElement][IndexOfRowElement];
+                    _rUpperMatrix[IndexOfColomnElement][IndexOfRowElement] = _Instance[IndexOfColomnElement][IndexOfRowElement];
+                }
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------------
+
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::~CMatrix()
+    { }
+
+    // -----------------------------------------------------------------------------
+
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
     bool CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::BreathFistSearch(float _Start, float _Knot)
     {
-        std::vector<int> Warteliste;
-        std::vector<bool> Markiert;
-        int Aktuell;
+        std::vector<int> WaitingQueue;
+        std::vector<bool> MarkedKnots;
+        int ActualElement;
         
         for (int IndexOfMarkedElement = 0; IndexOfMarkedElement < s_MaxNumberOfColumns; ++IndexOfMarkedElement) 
         {
-            Markiert.push_back(false);
+            MarkedKnots.push_back(false);
         }
-        Markiert[_Start] = true;
-        Warteliste.push_back(_Start);
+        MarkedKnots[_Start] = true;
+        WaitingQueue.push_back(_Start);
         
-        while (Warteliste.size() != 0) 
+        while (WaitingQueue.size() != 0) 
         {
-            Aktuell = Warteliste[0];
-            Warteliste.erase(Warteliste.begin());
+            ActualElement = WaitingQueue[0];
+            WaitingQueue.erase(WaitingQueue.begin());
             
-            if (Aktuell == _Knot) 
+            if (ActualElement == _Knot) 
             {
                 return true;
             }
             
             for (int IndexOfElementInColomn = 0; IndexOfElementInColomn < s_MaxNumberOfColumns; ++IndexOfElementInColomn) 
             {
-                if (m_Lines[Aktuell][IndexOfElementInColomn] == 1) 
+                if (m_Lines[ActualElement][IndexOfElementInColomn] == 1) 
                 {
-                    if (Markiert[IndexOfElementInColomn] == 0) 
+                    if (MarkedKnots[IndexOfElementInColomn] == 0) 
                     {
-                        Warteliste.push_back(IndexOfElementInColomn);
-                        Markiert[IndexOfElementInColomn] = 1;
+                        WaitingQueue.push_back(IndexOfElementInColomn);
+                        MarkedKnots[IndexOfElementInColomn] = 1;
                     }
                 }
             }
@@ -97,24 +138,24 @@ namespace Math
     template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
     bool CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::DepthFirstSearch(float _Start, float _Knot)
     {
-        std::vector<bool> Markiert;  
+        std::vector<bool> MarkedKnots;  
         for (int IndexOfMarkedElement = 0; IndexOfMarkedElement < s_MaxNumberOfColumns; ++IndexOfMarkedElement) 
         {
-            Markiert.push_back(false);
+            MarkedKnots.push_back(false);
         }
-        Markiert[_Start] = true;
+        MarkedKnots[_Start] = true;
         
         std::vector<float> Stack;
         Stack.push_back(_Start);
         
-        int Aktuell;
+        int ActualElement;
         
         while (Stack.size() != 0) 
         {
-            Aktuell = Stack[Stack.size() - 1];
-            Markiert[Aktuell] = 1;
+            ActualElement = Stack[Stack.size() - 1];
+            MarkedKnots[ActualElement] = 1;
             
-            if (Aktuell == _Knot) 
+            if (ActualElement == _Knot) 
             {
                 return true;
             }
@@ -123,9 +164,9 @@ namespace Math
             
             for (int IndexOfElementInColomn = 0; IndexOfElementInColomn < s_MaxNumberOfColumns; ++IndexOfElementInColomn) 
             {
-                if (m_Lines[Aktuell][IndexOfElementInColomn] == 1) 
+                if (m_Lines[ActualElement][IndexOfElementInColomn] == 1) 
                 {
-                    if (Markiert[IndexOfElementInColomn] == 0) 
+                    if (MarkedKnots[IndexOfElementInColomn] == 0) 
                     {
                         Stack.push_back(IndexOfElementInColomn);
                         
@@ -136,13 +177,119 @@ namespace Math
                 }
             }
             
-            if (NeighborsInside == 0) 
+            if (NeighborsInside == false) 
             {
                 Stack.pop_back();
             }
         }
         
         return false;
+    }
+
+    // -----------------------------------------------------------------------------
+
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    void CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::TriangularDecomposition(CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _rLowerMatrix, CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _rUpperMatrix)
+    {
+        // -----------------------------------------------------------------------------
+        // Dreieckszerlegung: Aufteilung in L und R Matrix
+        // -----------------------------------------------------------------------------
+
+        // -----------------------------------------------------------------------------
+        // init both matrix
+        // -----------------------------------------------------------------------------
+        for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+        {
+            for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+            {
+                _rLowerMatrix[IndexOfColomnElement][IndexOfRowElement] = 0;
+                _rUpperMatrix[IndexOfColomnElement][IndexOfRowElement] = m_Lines[IndexOfColomnElement][IndexOfRowElement];
+
+                if (IndexOfColomnElement == IndexOfRowElement)
+                {
+                    _rLowerMatrix[IndexOfColomnElement][IndexOfRowElement] = 1;
+                }
+            }
+        }
+
+        // -----------------------------------------------------------------------------
+        // create R and L Matrix
+        // -----------------------------------------------------------------------------
+        float ActualFactor;
+
+        for (unsigned int NumberOfTurns = 0; NumberOfTurns < s_MaxNumberOfRows; ++NumberOfTurns)
+        {
+            for (unsigned int IndexOfColomnElement = (NumberOfTurns + 1); IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+            {
+                ActualFactor = _rUpperMatrix[IndexOfColomnElement][NumberOfTurns] / _rUpperMatrix[NumberOfTurns][NumberOfTurns];
+
+                for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+                {
+                    _rUpperMatrix[IndexOfColomnElement][IndexOfRowElement] -= (ActualFactor * _rUpperMatrix[NumberOfTurns][IndexOfRowElement]);
+                }
+
+                _rLowerMatrix[IndexOfColomnElement][NumberOfTurns] = ActualFactor;
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------------
+
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    TDataTypeOfData CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::Determinate()
+    {
+        assert(s_MaxNumberOfColumns == s_MaxNumberOfRows);
+
+        CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns> LMatrix;
+        CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns> RMatrix;
+
+        TriangularDecomposition(LMatrix, RMatrix);
+
+        assert(RMatrix.s_MaxNumberOfColumns == RMatrix.s_MaxNumberOfRows);
+
+        TDataTypeOfData Det(-1); 
+
+        if (RMatrix.Rang() == RMatrix.s_MaxNumberOfColumns)
+        {
+            Det = RMatrix[0][0];
+
+            for (unsigned int IndexOfColumns = 1; IndexOfColumns < RMatrix.s_MaxNumberOfColumns; ++IndexOfColumns)
+            {
+                Det *= RMatrix[IndexOfColumns][IndexOfColumns];
+            }
+        }
+
+        return Det;
+    }
+
+    // -----------------------------------------------------------------------------
+
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    int CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::Rang()
+    {
+        // -----------------------------------------------------------------------------
+        // returns rang of matrix
+        // -----------------------------------------------------------------------------
+
+        int ZeroRang = 0;
+        int Check = 0;
+
+        for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+        {
+            for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+            {
+                Check += m_Lines[IndexOfColomnElement][IndexOfRowElement];
+            }
+
+            if (Check == 0)
+            {
+                ++ZeroRang;
+            }
+
+            Check = 0;
+        }
+
+        return s_MaxNumberOfColumns - ZeroRang;
     }
 
     // -----------------------------------------------------------------------------

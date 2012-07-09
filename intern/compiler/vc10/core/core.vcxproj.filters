@@ -7,48 +7,48 @@
     <Filter Include="Text">
       <UniqueIdentifier>{9900324b-7901-44dc-92ac-0a2dec3c8688}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math\Algorithm">
+      <UniqueIdentifier>{fe7c919f-b8a9-441f-9682-95192880bbea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Algebra">
+      <UniqueIdentifier>{3647af68-751e-4ec8-9b6f-58e3cbbea26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Analysis">
+      <UniqueIdentifier>{6fb8b90f-c296-4214-b8e7-0e2623fee8e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\inc\core\vector2.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\inc\core\cubic_spline.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\inc\core\function.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\inc\core\matrix2x2.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\inc\core\matrix3x3.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\inc\core\matrix4x4.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\inc\core\search_text.h">
       <Filter>Text</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\math_defines.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\cubic_spline.h">
+      <Filter>Math\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\matrix.h">
+      <Filter>Math\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\vector2.h">
+      <Filter>Math\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\vector.h">
+      <Filter>Math\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\function.h">
+      <Filter>Math\Analysis</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\core\cubic_spline.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\core\search_text.cpp">
       <Filter>Text</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\core\cubic_spline.cpp">
+      <Filter>Math\Algorithm</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\core\function.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\core\matrix2x2.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\core\matrix3x3.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\core\matrix4x4.cpp">
-      <Filter>Math</Filter>
+      <Filter>Math\Analysis</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -121,7 +121,7 @@ namespace app_cubic_spline {
                  ClickPoint[0] = e->Location.X;
                  ClickPoint[1] = e->Location.Y;
 
-                 m_pCubicSpline->AddPoint(ClickPoint);
+                 //m_pCubicSpline->AddPoint(ClickPoint);
 
 
                  // -----------------------------------------------------------------------------

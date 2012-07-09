@@ -8,6 +8,7 @@
 #include "core/math_defines.h"
 
 #include <assert.h>
+#include <cmath>
 
 namespace Core
 {
@@ -75,7 +76,8 @@ namespace Math
         
         for (;;) 
         {
-            if (func(xi) < EPSILON) {
+            if (std::abs(func(xi)) < EPSILON) 
+            {
                 break;
             }
             
@@ -83,6 +85,82 @@ namespace Math
         }
         
         return xi;
+    }
+
+    // -----------------------------------------------------------------------------
+
+    float IFunction1Base::Root(float _Start, float _End)
+    {
+        // -----------------------------------------------------------------------------
+        // bisection
+        // -----------------------------------------------------------------------------
+        float a;
+        float b;
+
+        a = _Start;
+        b = _End;
+
+        float x = (a + b) / 2.0f;
+
+        for(;;)
+        {
+            if (std::abs(func(x)) < EPSILON)
+            {
+                break;
+            }
+
+            x = (a + b) / 2.0f;
+
+            if (func(a) * func(x) < 0)
+            {
+                b = x;
+            }
+            else
+            {
+                a = x;
+            }
+        }
+
+        return x;
+    }
+
+    // -----------------------------------------------------------------------------
+
+    float IFunction1Base::RootRegula(float _Start, float _End)
+    {
+        // -----------------------------------------------------------------------------
+        // regula falsi
+        // -----------------------------------------------------------------------------
+        float a;
+        float b;
+
+        a = _Start;
+        b = _End;
+
+        float x = (b * func(a) - a * func(b)) / (func(a) - func(b));
+
+        int Counter = 0;
+
+        for(;;)
+        {
+            if (std::abs(func(x)) < EPSILON)
+            {
+                break;
+            }
+
+            x = (b * func(a) - a * func(b)) / (func(a) - func(b));
+
+            if (func(a) * func(x) < 0)
+            {
+                b = x;
+            }
+            else
+            {
+                a = x;
+            }
+        }
+
+        return x;
     }
     
     // -----------------------------------------------------------------------------

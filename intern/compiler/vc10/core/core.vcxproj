@@ -98,18 +98,15 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\core\cubic_spline.cpp" />
     <ClCompile Include="..\..\..\src\core\function.cpp" />
-    <ClCompile Include="..\..\..\src\core\matrix2x2.cpp" />
-    <ClCompile Include="..\..\..\src\core\matrix3x3.cpp" />
-    <ClCompile Include="..\..\..\src\core\matrix4x4.cpp" />
     <ClCompile Include="..\..\..\src\core\search_text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\inc\core\cubic_spline.h" />
     <ClInclude Include="..\..\..\..\inc\core\function.h" />
-    <ClInclude Include="..\..\..\..\inc\core\matrix2x2.h" />
-    <ClInclude Include="..\..\..\..\inc\core\matrix3x3.h" />
-    <ClInclude Include="..\..\..\..\inc\core\matrix4x4.h" />
+    <ClInclude Include="..\..\..\..\inc\core\math_defines.h" />
+    <ClInclude Include="..\..\..\..\inc\core\matrix.h" />
     <ClInclude Include="..\..\..\..\inc\core\search_text.h" />
+    <ClInclude Include="..\..\..\..\inc\core\vector.h" />
     <ClInclude Include="..\..\..\..\inc\core\vector2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
