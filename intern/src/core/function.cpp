@@ -139,8 +139,6 @@ namespace Math
 
         float x = (b * func(a) - a * func(b)) / (func(a) - func(b));
 
-        int Counter = 0;
-
         for(;;)
         {
             if (std::abs(func(x)) < EPSILON)

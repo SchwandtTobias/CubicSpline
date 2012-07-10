@@ -6,6 +6,7 @@
 #pragma once
 
 #include <assert.h>
+#include <string.h>
 #include <vector>
 
 namespace Core
@@ -15,6 +16,9 @@ namespace Math
     template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
     class CMatrix
     {
+    public:
+        
+        typedef CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns> CThis;
 
     public:
 
@@ -23,8 +27,9 @@ namespace Math
         static const unsigned int s_MaxNumberOfElements = s_MaxNumberOfColumns * s_MaxNumberOfRows;
 
     public:
+        
         CMatrix();
-        CMatrix(const CMatrix<TDataTypeOfData, TMaxNumberOfRows,TMaxNumberOfColumns>& _Instance);
+        CMatrix(const CThis& _Instance);
         ~CMatrix(); 
 
     public:
@@ -34,7 +39,7 @@ namespace Math
 
     public:
 
-        void TriangularDecomposition(CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _rLowerMatrix, CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _rUpperMatrix);
+        void TriangularDecomposition(CThis& _rLowerMatrix, CThis& _rUpperMatrix);
         TDataTypeOfData Determinate();
         int Rang();
 
@@ -43,12 +48,20 @@ namespace Math
         struct SLine 
         {
             TDataTypeOfData m_Elements[s_MaxNumberOfColumns];
-            TDataTypeOfData& operator [](unsigned int _Index);
+            
+            TDataTypeOfData& operator [](const unsigned int _Index);
+            const TDataTypeOfData& operator [](const unsigned int _Index) const;
         };
+        
+    public:
+        
+        bool operator == (const CThis& _rRight) const;
+        bool operator != (const CThis& _rRight) const;
 
     public:
 
-        SLine& operator [](unsigned int _Index);
+        SLine& operator [] (const unsigned int _Index);
+        const SLine& operator [] (const unsigned int _Index) const;
 
     private:
 
@@ -70,17 +83,14 @@ namespace Math
     // -----------------------------------------------------------------------------
 
     template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
-    CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::CMatrix(const CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _Instance)
+    CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::CMatrix(const CThis& _Instance)
     {
-        if (s_MaxNumberOfColumns <= _Instance.s_MaxNumberOfColumns && s_MaxNumberOfRows <= _Instance.s_MaxNumberOfRows)
+        for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
         {
             for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
             {
-                for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
-                {
-                    _rLowerMatrix[IndexOfColomnElement][IndexOfRowElement] = _Instance[IndexOfColomnElement][IndexOfRowElement];
-                    _rUpperMatrix[IndexOfColomnElement][IndexOfRowElement] = _Instance[IndexOfColomnElement][IndexOfRowElement];
-                }
+                m_Lines[IndexOfRowElement][IndexOfColomnElement] = _Instance[IndexOfRowElement][IndexOfColomnElement];
+                m_Lines[IndexOfRowElement][IndexOfColomnElement] = _Instance[IndexOfRowElement][IndexOfColomnElement];
             }
         }
     }
@@ -189,7 +199,7 @@ namespace Math
     // -----------------------------------------------------------------------------
 
     template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
-    void CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::TriangularDecomposition(CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _rLowerMatrix, CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>& _rUpperMatrix)
+    void CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::TriangularDecomposition(CThis& _rLowerMatrix, CThis& _rUpperMatrix)
     {
         // -----------------------------------------------------------------------------
         // Dreieckszerlegung: Aufteilung in L und R Matrix
@@ -198,16 +208,16 @@ namespace Math
         // -----------------------------------------------------------------------------
         // init both matrix
         // -----------------------------------------------------------------------------
-        for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+        for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
         {
-            for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+            for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
             {
-                _rLowerMatrix[IndexOfColomnElement][IndexOfRowElement] = 0;
-                _rUpperMatrix[IndexOfColomnElement][IndexOfRowElement] = m_Lines[IndexOfColomnElement][IndexOfRowElement];
+                _rLowerMatrix[IndexOfRowElement][IndexOfColomnElement] = 0;
+                _rUpperMatrix[IndexOfRowElement][IndexOfColomnElement] = m_Lines[IndexOfRowElement][IndexOfColomnElement];
 
                 if (IndexOfColomnElement == IndexOfRowElement)
                 {
-                    _rLowerMatrix[IndexOfColomnElement][IndexOfRowElement] = 1;
+                    _rLowerMatrix[IndexOfRowElement][IndexOfColomnElement] = 1;
                 }
             }
         }
@@ -219,16 +229,16 @@ namespace Math
 
         for (unsigned int NumberOfTurns = 0; NumberOfTurns < s_MaxNumberOfRows; ++NumberOfTurns)
         {
-            for (unsigned int IndexOfColomnElement = (NumberOfTurns + 1); IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+            for (unsigned int IndexOfRowElement = (NumberOfTurns + 1); IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
             {
-                ActualFactor = _rUpperMatrix[IndexOfColomnElement][NumberOfTurns] / _rUpperMatrix[NumberOfTurns][NumberOfTurns];
+                ActualFactor = _rUpperMatrix[IndexOfRowElement][NumberOfTurns] / _rUpperMatrix[NumberOfTurns][NumberOfTurns];
 
-                for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+                for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
                 {
-                    _rUpperMatrix[IndexOfColomnElement][IndexOfRowElement] -= (ActualFactor * _rUpperMatrix[NumberOfTurns][IndexOfRowElement]);
+                    _rUpperMatrix[IndexOfRowElement][IndexOfColomnElement] -= (ActualFactor * _rUpperMatrix[NumberOfTurns][IndexOfColomnElement]);
                 }
 
-                _rLowerMatrix[IndexOfColomnElement][NumberOfTurns] = ActualFactor;
+                _rLowerMatrix[IndexOfRowElement][NumberOfTurns] = ActualFactor;
             }
         }
     }
@@ -238,24 +248,20 @@ namespace Math
     template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
     TDataTypeOfData CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::Determinate()
     {
-        assert(s_MaxNumberOfColumns == s_MaxNumberOfRows);
-
-        CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns> LMatrix;
-        CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns> RMatrix;
+        CThis LMatrix;
+        CThis RMatrix;
 
         TriangularDecomposition(LMatrix, RMatrix);
 
-        assert(RMatrix.s_MaxNumberOfColumns == RMatrix.s_MaxNumberOfRows);
-
         TDataTypeOfData Det(-1); 
 
-        if (RMatrix.Rang() == RMatrix.s_MaxNumberOfColumns)
+        if (RMatrix.Rang() == s_MaxNumberOfColumns)
         {
             Det = RMatrix[0][0];
 
-            for (unsigned int IndexOfColumns = 1; IndexOfColumns < RMatrix.s_MaxNumberOfColumns; ++IndexOfColumns)
+            for (unsigned int IndexOfElement = 1; IndexOfElement < s_MaxNumberOfColumns; ++IndexOfElement)
             {
-                Det *= RMatrix[IndexOfColumns][IndexOfColumns];
+                Det *= RMatrix[IndexOfElement][IndexOfElement];
             }
         }
 
@@ -274,11 +280,11 @@ namespace Math
         int ZeroRang = 0;
         int Check = 0;
 
-        for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+        for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
         {
-            for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+            for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
             {
-                Check += m_Lines[IndexOfColomnElement][IndexOfRowElement];
+                Check += m_Lines[IndexOfRowElement][IndexOfColomnElement];
             }
 
             if (Check == 0)
@@ -291,11 +297,65 @@ namespace Math
 
         return s_MaxNumberOfColumns - ZeroRang;
     }
+    
+    // -----------------------------------------------------------------------------
+    
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    bool CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::operator == (const CThis& _rRight) const
+    {
+        bool IsEqual = false;
+        
+        for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+        {
+            for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+            {
+                IsEqual = m_Lines[IndexOfRowElement][IndexOfColomnElement] == _rRight[IndexOfRowElement][IndexOfColomnElement];
+                
+                if (IsEqual == false) 
+                {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    bool CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::operator != (const CThis& _rRight) const
+    {
+        bool IsEqual = false;
+        
+        for (unsigned int IndexOfRowElement = 0; IndexOfRowElement < s_MaxNumberOfRows; ++IndexOfRowElement)
+        {
+            for (unsigned int IndexOfColomnElement = 0; IndexOfColomnElement < s_MaxNumberOfColumns; ++IndexOfColomnElement)
+            {
+                IsEqual = m_Lines[IndexOfRowElement][IndexOfColomnElement] == _rRight[IndexOfRowElement][IndexOfColomnElement];
+                
+                if (IsEqual == false) 
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
 
     // -----------------------------------------------------------------------------
     
     template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
-    typename CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::SLine& CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::operator [](unsigned int _Index)
+    typename CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::SLine& CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::operator [](const unsigned int _Index)
+    {
+        return m_Lines[_Index];
+    }
+    
+    // -----------------------------------------------------------------------------
+    
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    const typename CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::SLine& CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::operator [](const unsigned int _Index) const
     {
         return m_Lines[_Index];
     }
@@ -303,9 +363,33 @@ namespace Math
     // -----------------------------------------------------------------------------
 
     template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
-    TDataTypeOfData& CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::SLine::operator [](unsigned int _Index)
+    TDataTypeOfData& CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::SLine::operator [](const unsigned int _Index)
     {
         return m_Elements[_Index];
     }
+    
+    // -----------------------------------------------------------------------------
+    
+    template <typename TDataTypeOfData, unsigned int TMaxNumberOfRows, unsigned int TMaxNumberOfColumns>
+    const TDataTypeOfData& CMatrix<TDataTypeOfData, TMaxNumberOfRows, TMaxNumberOfColumns>::SLine::operator [](const unsigned int _Index) const
+    {
+        return m_Elements[_Index];
+    }
+} // namespace Math
+} // namespace Core
+
+namespace Core
+{
+namespace Math
+{
+    
+    typedef CMatrix<int, 3, 3> CIntMatrix3x3;
+    typedef CMatrix<int, 4, 4> CIntMatrix4x4;
+    typedef CMatrix<int, 5, 5> CIntMatrix5x5;
+    
+    typedef CMatrix<float, 3, 3> CFloatMatrix3x3;
+    typedef CMatrix<float, 4, 4> CFloatMatrix4x4;
+    typedef CMatrix<float, 5, 5> CFloatMatrix5x5;
+    
 } // namespace Math
 } // namespace Core

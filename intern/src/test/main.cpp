@@ -21,11 +21,11 @@ void TEST_FUNCTION()
 {
     MyFunction Function;
     
-    std::cout << "Y bei 0: "             << Function.func(0) << std::endl;
-    std::cout << "Y' bei 4: "            << Function.func1(4) << std::endl;
+    std::cout << "Y bei 0:   "           << Function.func(0) << std::endl;
+    std::cout << "Y' bei 4:  "           << Function.func1(4) << std::endl;
     std::cout << "Y'' bei 4: "           << Function.func2(4) << std::endl;
     
-    std::cout << "Fläche (0 bis 1): "    << Function.Area(0, 1) << std::endl;
+    std::cout << "Flaeche (0 bis 1):  "  << Function.Area(0, 1) << std::endl;
     
     std::cout << "Nullstelle (Newton): " << Function.Root(-5) << std::endl;
     std::cout << "Nullstelle (Bisect): " << Function.Root(0, 5) << std::endl;
@@ -57,14 +57,14 @@ void TEST_MATRIX()
     std::cout << "Tiefensuche: " << Found << std::endl;
 
 
-    Core::Math::CMatrix<int, 3, 3> LRMatrix;
+    Core::Math::CIntMatrix3x3 LRMatrix;
 
     LRMatrix[0][0] = 3; LRMatrix[0][1] = 2;  LRMatrix[0][2] = 1;
     LRMatrix[1][0] = 6; LRMatrix[1][1] = 6;  LRMatrix[1][2] = 3;
     LRMatrix[2][0] = 9; LRMatrix[2][1] = 10; LRMatrix[2][2] = 6;
 
-    Core::Math::CMatrix<int, 3, 3> LMatrix;
-    Core::Math::CMatrix<int, 3, 3> RMatrix;
+    Core::Math::CIntMatrix3x3 LMatrix;
+    Core::Math::CIntMatrix3x3 RMatrix;
 
     LRMatrix.TriangularDecomposition(LMatrix, RMatrix);
 
