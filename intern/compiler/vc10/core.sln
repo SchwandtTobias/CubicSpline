@@ -9,6 +9,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj",
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_cubic_spline", "app_cubic_spline\app_cubic_spline.vcxproj", "{AB58B496-8EF3-4D44-97C1-9E3D7108D3EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7D68D662-FC77-478E-9410-1D3B53FBF392} = {7D68D662-FC77-478E-9410-1D3B53FBF392}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

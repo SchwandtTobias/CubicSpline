@@ -58,6 +58,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>..\..\..\..\inc</AdditionalIncludeDirectories>
+      <CompileAsManaged>true</CompileAsManaged>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -99,6 +101,8 @@
     <None Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\app_cubic_spline\Spline.cpp" />
+    <ClCompile Include="..\..\..\src\app_cubic_spline\spline_manager.cpp" />
     <ClCompile Include="app_cubic_spline.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -107,6 +111,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\inc\app_cubic_spline\Spline.h" />
+    <ClInclude Include="..\..\..\..\inc\app_cubic_spline\spline_manager.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
