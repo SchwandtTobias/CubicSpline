@@ -26,7 +26,8 @@ public:
 public:
 
     CSpline^ GetSpline(const int _Index);
-    std::vector<Core::Math::Float2*> GetPoints(const int _Index);
+    std::vector<Core::Math::Float2> GetPoints(const int _Index);
+    void RemovePoint(const int _IndexOfSpline, const int _IndexOfPoint);
 
 private:
 

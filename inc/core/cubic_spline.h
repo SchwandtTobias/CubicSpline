@@ -19,6 +19,9 @@ namespace Math
 	public:
 
 		void AddPoint(Float2& _rNewPoint);
+        bool RemovePointWithPosition(float _XPos);
+        bool RemovePointOnIndex(unsigned int _Index);
+
         float Interpolate(float _XPos);
         
         float MinX();

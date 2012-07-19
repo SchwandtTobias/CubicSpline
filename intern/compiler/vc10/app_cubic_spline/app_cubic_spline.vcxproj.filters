@@ -38,6 +38,9 @@
     <ClCompile Include="..\..\..\src\app_cubic_spline\spline_manager.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="AddPointForm.cpp">
+      <Filter>Headerdateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Form1.h">

@@ -56,6 +56,43 @@ namespace Math
 
     // -----------------------------------------------------------------------------
 
+    bool CCubicSpline::RemovePointWithPosition(float _XPos)
+    {
+        for (unsigned int IndexOfPoint = 0; IndexOfPoint < m_Points.size(); ++IndexOfPoint)
+        {
+            if (m_Points[IndexOfPoint][0] == _XPos)
+            {
+                return RemovePointOnIndex(IndexOfPoint);
+            }
+        }
+
+        return false;
+    }
+
+    // -----------------------------------------------------------------------------
+
+    bool CCubicSpline::RemovePointOnIndex(unsigned int _Index)
+    {
+        if (_Index < m_Points.size())
+        {
+            m_Points.erase(m_Points.begin() + _Index);
+            CPoints OldPoints = m_Points;
+
+            m_Points.clear();
+
+            for (unsigned int IndexOfPoint = 0; IndexOfPoint < OldPoints.size(); ++IndexOfPoint)
+            {
+                AddPoint(OldPoints[IndexOfPoint]);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // -----------------------------------------------------------------------------
+
     float CCubicSpline::Interpolate(float _XPos)
     {
         return Interp(_XPos);

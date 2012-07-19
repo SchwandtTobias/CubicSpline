@@ -12,22 +12,25 @@
 ref class CSpline
 {
 public:
+
     CSpline();
     ~CSpline();
 
 public:
+
     void AddPoint(int _X, int _Y);
+    void RemovePoint(const int _Index);
 
-    int  MinX();
-    int  MaxX();
+    float  MinX();
+    float  MaxX();
 
-    int  Interpolate(int _X);
+    float Interpolate(float _X);
 
-    std::vector<Core::Math::Float2*> GetPoints();
-
+    std::vector<Core::Math::Float2> GetPoints();
 
 private:
+
     Core::Math::CCubicSpline* m_pCubicSpline;
-    std::vector<Core::Math::Float2*>* m_pPoints;
+    std::vector<Core::Math::Float2>* m_pPoints;
 };
 
