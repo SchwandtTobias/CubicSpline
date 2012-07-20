@@ -26,19 +26,36 @@ void CSpline::AddPoint(int _X, int _Y)
     NewPoint[0] = _X;
     NewPoint[1] = _Y;
 
-    m_pPoints->push_back(NewPoint);
+    bool PointCanBeAdded;
 
-    std::sort(m_pPoints->begin(), m_pPoints->end());
+    PointCanBeAdded = m_pCubicSpline->AddPoint(NewPoint);
 
-    m_pCubicSpline->AddPoint(NewPoint);
+    if (PointCanBeAdded)
+    {
+        m_pPoints->push_back(NewPoint);
+
+        std::sort(m_pPoints->begin(), m_pPoints->end());
+    }
 }
 
 // -----------------------------------------------------------------------------
 
 void CSpline::RemovePoint(const int _Index)
 {
-    m_pPoints->erase(m_pPoints->begin() + _Index);
-    m_pCubicSpline->RemovePointOnIndex(_Index);
+    bool ValueCanBeRemoved;
+
+    // -----------------------------------------------------------------------------
+    // remove point @ index
+    // -----------------------------------------------------------------------------
+    ValueCanBeRemoved = m_pCubicSpline->RemovePointOnIndex(_Index);
+
+    if (ValueCanBeRemoved)
+    {
+        // -----------------------------------------------------------------------------
+        // remove point from internal list
+        // -----------------------------------------------------------------------------
+        m_pPoints->erase(m_pPoints->begin() + _Index);
+    }
 }
 
 // -----------------------------------------------------------------------------

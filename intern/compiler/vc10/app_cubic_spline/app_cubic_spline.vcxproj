@@ -104,7 +104,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\app_cubic_spline\Spline.cpp" />
     <ClCompile Include="..\..\..\src\app_cubic_spline\spline_manager.cpp" />
-    <ClCompile Include="AddPointForm.cpp" />
     <ClCompile Include="app_cubic_spline.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="stdafx.cpp">

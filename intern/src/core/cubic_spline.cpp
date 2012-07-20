@@ -11,8 +11,36 @@ namespace Core
 {
 namespace Math
 {
-    void CCubicSpline::AddPoint(Float2& _rNewPoint)
+    bool CCubicSpline::AddPoint(Float2& _rNewPoint)
     {
+        // -----------------------------------------------------------------------------
+        // check if point alread exist
+        // -----------------------------------------------------------------------------
+        float CheckXValue;
+
+        for (unsigned int IndexOfPoint = 0; IndexOfPoint < m_Points.size(); ++IndexOfPoint)
+        {
+            CheckXValue = m_Points[IndexOfPoint][0];
+
+            if (CheckXValue >= _rNewPoint[0])
+            {
+                if (CheckXValue == _rNewPoint[0])
+                {
+                    // -----------------------------------------------------------------------------
+                    // point can not be added to spline because this point with 
+                    // this x-value already exist
+                    // -----------------------------------------------------------------------------
+                    return false;
+                }
+
+                // -----------------------------------------------------------------------------
+                // point can't be already inside
+                // -----------------------------------------------------------------------------
+                break;
+            }
+        }
+
+
         // -----------------------------------------------------------------------------
         // add point to list
         // -----------------------------------------------------------------------------        
@@ -52,6 +80,8 @@ namespace Math
         // set dirty flag
         // -----------------------------------------------------------------------------
         m_Dirty = true;
+
+        return true;
     }
 
     // -----------------------------------------------------------------------------

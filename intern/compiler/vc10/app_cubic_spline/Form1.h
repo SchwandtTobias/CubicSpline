@@ -49,9 +49,9 @@ namespace app_cubic_spline
         CSplineManager m_Splines;
 
     private: System::Windows::Forms::Label^  LabelSpline;
-    private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip1;
-    private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip2;
-    private: System::Windows::Forms::ToolStripMenuItem^  beendenToolStripMenuItem;
+
+
+
     private: System::Windows::Forms::ListBox^  ListPoints;
     private: System::Windows::Forms::Button^  ButtonAddPoint;
     private: System::Windows::Forms::TextBox^  BoxX;
@@ -77,13 +77,9 @@ namespace app_cubic_spline
 		/// </summary>
 		void InitializeComponent(void)
 		{
-            this->components = (gcnew System::ComponentModel::Container());
             this->panel_draw = (gcnew System::Windows::Forms::Panel());
             this->SplineList = (gcnew System::Windows::Forms::ListBox());
             this->LabelSpline = (gcnew System::Windows::Forms::Label());
-            this->contextMenuStrip1 = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
-            this->contextMenuStrip2 = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
-            this->beendenToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
             this->ListPoints = (gcnew System::Windows::Forms::ListBox());
             this->ButtonAddPoint = (gcnew System::Windows::Forms::Button());
             this->BoxX = (gcnew System::Windows::Forms::TextBox());
@@ -92,7 +88,6 @@ namespace app_cubic_spline
             this->panel1 = (gcnew System::Windows::Forms::Panel());
             this->panel2 = (gcnew System::Windows::Forms::Panel());
             this->panel3 = (gcnew System::Windows::Forms::Panel());
-            this->contextMenuStrip2->SuspendLayout();
             this->SuspendLayout();
             // 
             // panel_draw
@@ -142,23 +137,6 @@ namespace app_cubic_spline
             this->LabelSpline->Size = System::Drawing::Size(68, 21);
             this->LabelSpline->TabIndex = 3;
             this->LabelSpline->Text = L"Splines:";
-            // 
-            // contextMenuStrip1
-            // 
-            this->contextMenuStrip1->Name = L"contextMenuStrip1";
-            this->contextMenuStrip1->Size = System::Drawing::Size(61, 4);
-            // 
-            // contextMenuStrip2
-            // 
-            this->contextMenuStrip2->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) {this->beendenToolStripMenuItem});
-            this->contextMenuStrip2->Name = L"contextMenuStrip2";
-            this->contextMenuStrip2->Size = System::Drawing::Size(121, 26);
-            // 
-            // beendenToolStripMenuItem
-            // 
-            this->beendenToolStripMenuItem->Name = L"beendenToolStripMenuItem";
-            this->beendenToolStripMenuItem->Size = System::Drawing::Size(120, 22);
-            this->beendenToolStripMenuItem->Text = L"&Beenden";
             // 
             // ListPoints
             // 
@@ -272,7 +250,6 @@ namespace app_cubic_spline
             this->Name = L"Form1";
             this->Text = L"Kubische Spline Interpolation";
             this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load_1);
-            this->contextMenuStrip2->ResumeLayout(false);
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -415,8 +392,8 @@ private: System::Void SplineList_DoubleClick(System::Object^  sender, System::Ev
                 // -----------------------------------------------------------------------------
                 CSpline^ CurrentSpline = m_Splines.GetSpline(IndexOfSpline);
 
-                int MinX = CurrentSpline->MinX();
-                int MaxX = CurrentSpline->MaxX();
+                float MinX = CurrentSpline->MinX();
+                float MaxX = CurrentSpline->MaxX();
 
                 Core::Math::Float2 LastPoint(MinX, CurrentSpline->Interpolate(MinX));
                 LastPoint = CartesianToSystem(LastPoint);
@@ -535,14 +512,20 @@ private: System::Void ButtonAddPoint_Click(System::Object^  sender, System::Even
                  
                  if (!DeleteOnly)
                  {
-                     // -----------------------------------------------------------------------------
-                     // add new points
-                     // -----------------------------------------------------------------------------
-                     Core::Math::Float2 NewPoint;
-                     NewPoint[0] = System::Convert::ToInt32(BoxX->Text);
-                     NewPoint[1] = -System::Convert::ToInt32(BoxY->Text);
+                        // -----------------------------------------------------------------------------
+                        // try add new points
+                        // -----------------------------------------------------------------------------
+                        try
+                        {
+                            Core::Math::Float2 NewPoint;
+                            NewPoint[0] =  System::Convert::ToInt32(BoxX->Text);
+                            NewPoint[1] = -System::Convert::ToInt32(BoxY->Text);
 
-                     m_Splines.GetSpline(SelectedSplineIndex)->AddPoint(NewPoint[0], NewPoint[1]);
+                            m_Splines.GetSpline(SelectedSplineIndex)->AddPoint(NewPoint[0], NewPoint[1]);
+                        }
+                        catch (...)
+                        {
+                        }
                  }
 
                  // -----------------------------------------------------------------------------
