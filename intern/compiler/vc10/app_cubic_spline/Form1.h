@@ -64,6 +64,210 @@ namespace app_cubic_spline
 
     private: System::ComponentModel::IContainer^  components;
 
+    public:
+        void DrawSpline()
+        {
+            Graphics ^ Graphic = panel_draw->CreateGraphics();
+            Pen ^ LinePen      = gcnew Pen(Color::LightGray);
+            Pen ^ SplinePen    = gcnew Pen(Color::Black);
+
+            System::Drawing::Font^ SystemFont = gcnew System::Drawing::Font( "Sergeo UI", 10 );
+
+            // -----------------------------------------------------------------------------
+            // restore background
+            // -----------------------------------------------------------------------------
+            Graphic->Clear(Color::White);
+
+            // -----------------------------------------------------------------------------
+            // draw line
+            // -----------------------------------------------------------------------------
+            int PanelWidth  = panel_draw->Size.Width;
+            int PanelHeight = panel_draw->Size.Height;
+
+            LinePen->DashCap = System::Drawing::Drawing2D::DashCap::Flat;
+
+            //x-lines
+            for (int HeightPosition = 0; HeightPosition < PanelHeight; HeightPosition += 10)
+            {
+                Point px0(0,          HeightPosition);
+                Point px1(PanelWidth, HeightPosition);
+                Graphic->DrawLine(LinePen, px0, px1);
+            }
+
+
+            //y-line
+            for (int WidthPosition = 0; WidthPosition < PanelWidth; WidthPosition += 10)
+            {
+                Point py0(WidthPosition, 0);
+                Point py1(WidthPosition, PanelHeight);
+                Graphic->DrawLine(LinePen, py0, py1);
+            }
+
+
+            LinePen->Color = Color::Gray;
+
+            int MiddleRasterWidth = (int)(PanelWidth / 2 / 10) * 10;
+            int MiddleRasterHeight = (int)(PanelHeight / 2 / 10) * 10;
+
+            Point py0(MiddleRasterWidth, 0);
+            Point py1(MiddleRasterWidth, PanelHeight);
+            Graphic->DrawLine(LinePen, py0, py1);
+
+            Point px0(0,          MiddleRasterHeight);
+            Point px1(PanelWidth, MiddleRasterHeight);
+            Graphic->DrawLine(LinePen, px0, px1);
+
+            // -----------------------------------------------------------------------------
+            // draw points and splines
+            // -----------------------------------------------------------------------------
+            SolidBrush^ PointBrush = gcnew SolidBrush( Color::Black );
+            String^ PointString;
+
+            for (int IndexOfSpline = 0; IndexOfSpline < CSplineManager::s_MAXSPLINES; ++IndexOfSpline)
+            {
+                if (IndexOfSpline == 0)
+                {
+                    SplinePen->Color = Color::DarkRed;
+                    PointBrush->Color = Color::DarkRed;
+                }
+                else if (IndexOfSpline == 1)
+                {
+                    SplinePen->Color = Color::SeaGreen;
+                    PointBrush->Color = Color::SeaGreen;
+                }
+                else if (IndexOfSpline == 2)
+                {
+                    SplinePen->Color = Color::RoyalBlue;
+                    PointBrush->Color = Color::RoyalBlue;
+                }
+                else
+                {
+                    SplinePen->Color = Color::Black;
+                    PointBrush->Color = Color::Black;
+                }
+
+                // -----------------------------------------------------------------------------
+                // draw points
+                // -----------------------------------------------------------------------------
+                std::vector<Core::Math::Float2> Points = m_Splines.GetPoints(IndexOfSpline);
+
+                int InsertedPoints = Points.size();
+
+                for (int IndexOfPoint = 0; IndexOfPoint < InsertedPoints; ++IndexOfPoint)
+                {
+                    //draw
+                    Core::Math::Float2 ActualPoint = Points[IndexOfPoint];
+
+                    ActualPoint = CartesianToSystem(ActualPoint);
+
+                    Point p1(ActualPoint[0], ActualPoint[1]);
+
+                    Graphic->DrawEllipse(SplinePen, p1.X - 3, p1.Y - 3, 6, 6);
+
+                    ActualPoint = SystemToCartesian(ActualPoint);
+
+                    PointString = ActualPoint[0] + ";" + -ActualPoint[1];
+
+                    Graphic->DrawString(PointString, SystemFont,  PointBrush, p1);
+
+                }
+
+                // -----------------------------------------------------------------------------
+                // draw interpolation
+                // -----------------------------------------------------------------------------
+                CSpline^ CurrentSpline = m_Splines.GetSpline(IndexOfSpline);
+
+                float MinX = CurrentSpline->MinX();
+                float MaxX = CurrentSpline->MaxX();
+
+                Core::Math::Float2 LastPoint(MinX, CurrentSpline->Interpolate(MinX));
+                LastPoint = CartesianToSystem(LastPoint);
+
+                Core::Math::Float2 NextPoint(0, 0);
+
+                for (float xPosition = MinX; xPosition < MaxX; xPosition += 0.2f)
+                {
+                    NextPoint[0] = xPosition;
+                    NextPoint[1] = CurrentSpline->Interpolate(xPosition);
+
+                    NextPoint = CartesianToSystem(NextPoint);
+
+                    Point PNext(NextPoint[0], NextPoint[1]);
+                    Point PLast(LastPoint[0], LastPoint[1]);
+
+                    Graphic->DrawLine(SplinePen, PLast, PNext);
+
+                    LastPoint = NextPoint;
+                }
+
+                delete CurrentSpline;
+            }
+
+            delete LinePen;
+            delete SplinePen;
+            delete Graphic;
+        }
+
+        void InsertPointsToList()
+        {
+            if (SplineList->SelectedIndex != -1)
+            {
+                // -----------------------------------------------------------------------------
+                // change points in list
+                // -----------------------------------------------------------------------------
+                int SelectedIndex = SplineList->SelectedIndex;
+
+                ListPoints->Items->Clear();
+
+                // -----------------------------------------------------------------------------
+                // add points
+                // -----------------------------------------------------------------------------
+                std::vector<Core::Math::Float2> Points = m_Splines.GetPoints(SelectedIndex);
+
+                int InsertedPoints = Points.size();
+
+                for (int IndexOfPoint = 0; IndexOfPoint < InsertedPoints; ++IndexOfPoint)
+                {
+                    //add
+                    Core::Math::Float2 ActualPoint = Points[IndexOfPoint];
+
+                    ListPoints->Items->Add(PointToString(ActualPoint));
+                }
+            }
+        }
+
+        Core::Math::Float2 StringToPoint(String^ _ValuePair)
+        {
+            cli::array<String^>^ Pair = _ValuePair->Split(';');
+
+            Core::Math::Float2 NewPoint;
+            NewPoint[0] = System::Convert::ToInt32(Pair[0]);
+            NewPoint[1] = System::Convert::ToInt32(Pair[1]);
+
+            return NewPoint;
+        }
+
+        String^ PointToString(Core::Math::Float2 _Point)
+        {
+            return System::Convert::ToString(_Point[0]) + ";" + System::Convert::ToString(-_Point[1]);
+        }
+
+        Core::Math::Float2 SystemToCartesian(Core::Math::Float2 _Point)
+        {
+            _Point[0] = _Point[0] / 10 - (panel_draw->Size.Width / 2 / 10);
+            _Point[1] = (_Point[1] / 10 - (panel_draw->Size.Height / 2 / 10));
+
+            return _Point;
+        }
+
+        Core::Math::Float2 CartesianToSystem(Core::Math::Float2 _Point)
+        {
+            _Point[0] = (_Point[0] + (panel_draw->Size.Width / 2 / 10)) * 10;
+            _Point[1] = ((_Point[1] + (panel_draw->Size.Height / 2 / 10)) * 10);
+
+            return _Point;
+        }
+
 	private:
 		/// <summary>
 		/// Erforderliche Designervariable.
@@ -99,14 +303,14 @@ namespace app_cubic_spline
             this->panel_draw->AutoSize = true;
             this->panel_draw->BackColor = System::Drawing::Color::White;
             this->panel_draw->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-            this->panel_draw->Cursor = System::Windows::Forms::Cursors::Arrow;
+            this->panel_draw->Cursor = System::Windows::Forms::Cursors::Default;
             this->panel_draw->ForeColor = System::Drawing::Color::Transparent;
             this->panel_draw->Location = System::Drawing::Point(12, 12);
             this->panel_draw->Name = L"panel_draw";
             this->panel_draw->Size = System::Drawing::Size(600, 423);
             this->panel_draw->TabIndex = 0;
-            this->panel_draw->SizeChanged += gcnew System::EventHandler(this, &Form1::panel_draw_SizeChanged);
             this->panel_draw->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::panel_draw_MouseClick);
+            this->panel_draw->Resize += gcnew System::EventHandler(this, &Form1::panel_draw_Resize);
             // 
             // SplineList
             // 
@@ -251,17 +455,24 @@ namespace app_cubic_spline
             this->Name = L"Form1";
             this->Text = L"Kubische Spline Interpolation";
             this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load_1);
+            this->Shown += gcnew System::EventHandler(this, &Form1::Form1_Shown);
             this->ResumeLayout(false);
             this->PerformLayout();
 
         }
 #pragma endregion
+    
+
     private: System::Void Form1_Load_1(System::Object^  sender, System::EventArgs^  e) 
         {          
             SplineList->SelectedIndex = 0;
         }
+    private: System::Void Form1_Shown(System::Object^  sender, System::EventArgs^  e) 
+        {
+            DrawSpline();
+        }
 
-private: System::Void panel_draw_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) 
+    private: System::Void panel_draw_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) 
         {
             // -----------------------------------------------------------------------------
             // add click to instances (splines) selected in list
@@ -289,202 +500,13 @@ private: System::Void panel_draw_MouseClick(System::Object^  sender, System::Win
             // -----------------------------------------------------------------------------
             InsertPointsToList();
         }
-private: System::Void SplineList_DoubleClick(System::Object^  sender, System::EventArgs^  e) {
+    private: System::Void SplineList_DoubleClick(System::Object^  sender, System::EventArgs^  e) 
+        {
             // -----------------------------------------------------------------------------
             // open dialog edit spline
             // -----------------------------------------------------------------------------
         }
-
-
-    public:
-        void DrawSpline()
-        {
-            Graphics ^ Graphic = panel_draw->CreateGraphics();
-            Pen ^ LinePen      = gcnew Pen(Color::LightGray);
-            Pen ^ SplinePen    = gcnew Pen(Color::Black);
-
-            // -----------------------------------------------------------------------------
-            // restore background
-            // -----------------------------------------------------------------------------
-            Graphic->Clear(Color::White);
-
-            // -----------------------------------------------------------------------------
-            // draw line
-            // -----------------------------------------------------------------------------
-            int PanelWidth  = panel_draw->Size.Width;
-            int PanelHeight = panel_draw->Size.Height;
-
-            LinePen->DashCap = System::Drawing::Drawing2D::DashCap::Flat;
-
-            //x-lines
-            for (int HeightPosition = 0; HeightPosition < PanelHeight; HeightPosition += 10)
-            {
-                Point px0(0,          HeightPosition);
-                Point px1(PanelWidth, HeightPosition);
-                Graphic->DrawLine(LinePen, px0, px1);
-            }
-            
-
-            //y-line
-            for (int WidthPosition = 0; WidthPosition < PanelWidth; WidthPosition += 10)
-            {
-                Point py0(WidthPosition, 0);
-                Point py1(WidthPosition, PanelHeight);
-                Graphic->DrawLine(LinePen, py0, py1);
-            }
-
-            LinePen->Color = Color::Gray;
-
-            int MiddleRasterWidth = (int)(PanelWidth / 2 / 10) * 10;
-            int MiddleRasterHeight = (int)(PanelHeight / 2 / 10) * 10;
-
-            Point py0(MiddleRasterWidth, 0);
-            Point py1(MiddleRasterWidth, PanelHeight);
-            Graphic->DrawLine(LinePen, py0, py1);
-
-            Point px0(0,          MiddleRasterHeight);
-            Point px1(PanelWidth, MiddleRasterHeight);
-            Graphic->DrawLine(LinePen, px0, px1);
-
-            // -----------------------------------------------------------------------------
-            // draw points and splines
-            // -----------------------------------------------------------------------------
-            for (int IndexOfSpline = 0; IndexOfSpline < CSplineManager::s_MAXSPLINES; ++IndexOfSpline)
-            {
-                if (IndexOfSpline == 0)
-                {
-                    SplinePen->Color = Color::DarkRed;
-                }
-                else if (IndexOfSpline == 1)
-                {
-                    SplinePen->Color = Color::SeaGreen;
-                }
-                else if (IndexOfSpline == 2)
-                {
-                    SplinePen->Color = Color::RoyalBlue;
-                }
-                else
-                {
-                    SplinePen->Color = Color::Black;
-                }
-
-                // -----------------------------------------------------------------------------
-                // draw points
-                // -----------------------------------------------------------------------------
-                std::vector<Core::Math::Float2> Points = m_Splines.GetPoints(IndexOfSpline);
-
-                int InsertedPoints = Points.size();
-
-                for (int IndexOfPoint = 0; IndexOfPoint < InsertedPoints; ++IndexOfPoint)
-                {
-                    //draw
-                    Core::Math::Float2 ActualPoint = Points[IndexOfPoint];
-
-                    ActualPoint = CartesianToSystem(ActualPoint);
-
-                    Point p1(ActualPoint[0], ActualPoint[1]);
-                    
-                    Graphic->DrawEllipse(SplinePen, p1.X - 3, p1.Y - 3, 6, 6);
-
-                }
-
-                // -----------------------------------------------------------------------------
-                // draw interpolation
-                // -----------------------------------------------------------------------------
-                CSpline^ CurrentSpline = m_Splines.GetSpline(IndexOfSpline);
-
-                float MinX = CurrentSpline->MinX();
-                float MaxX = CurrentSpline->MaxX();
-
-                Core::Math::Float2 LastPoint(MinX, CurrentSpline->Interpolate(MinX));
-                LastPoint = CartesianToSystem(LastPoint);
-
-                Core::Math::Float2 NextPoint(0, 0);
-
-                for (float xPosition = MinX; xPosition < MaxX; xPosition += 0.2f)
-                {
-                    NextPoint[0] = xPosition;
-                    NextPoint[1] = CurrentSpline->Interpolate(xPosition);
-
-                    NextPoint = CartesianToSystem(NextPoint);
-
-                    Point PNext(NextPoint[0], NextPoint[1]);
-                    Point PLast(LastPoint[0], LastPoint[1]);
-
-                    Graphic->DrawLine(SplinePen, PLast, PNext);
-
-                    LastPoint = NextPoint;
-                }
-
-                delete CurrentSpline;
-            }
-
-            delete LinePen;
-            delete SplinePen;
-            delete Graphic;
-        }
-
-        void InsertPointsToList()
-        {
-            if (SplineList->SelectedIndex != -1)
-            {
-                // -----------------------------------------------------------------------------
-                // change points in list
-                // -----------------------------------------------------------------------------
-                int SelectedIndex = SplineList->SelectedIndex;
-
-                ListPoints->Items->Clear();
-
-                // -----------------------------------------------------------------------------
-                // add points
-                // -----------------------------------------------------------------------------
-                std::vector<Core::Math::Float2> Points = m_Splines.GetPoints(SelectedIndex);
-
-                int InsertedPoints = Points.size();
-
-                for (int IndexOfPoint = 0; IndexOfPoint < InsertedPoints; ++IndexOfPoint)
-                {
-                    //add
-                    Core::Math::Float2 ActualPoint = Points[IndexOfPoint];
-
-                    ListPoints->Items->Add(PointToString(ActualPoint));
-                }
-            }
-        }
-
-        Core::Math::Float2 StringToPoint(String^ _ValuePair)
-        {
-            cli::array<String^>^ Pair = _ValuePair->Split(';');
-
-            Core::Math::Float2 NewPoint;
-            NewPoint[0] = System::Convert::ToInt32(Pair[0]);
-            NewPoint[1] = System::Convert::ToInt32(Pair[1]);
-
-            return NewPoint;
-        }
-
-        String^ PointToString(Core::Math::Float2 _Point)
-        {
-            return System::Convert::ToString(_Point[0]) + ";" + System::Convert::ToString(-_Point[1]);
-        }
-
-        Core::Math::Float2 SystemToCartesian(Core::Math::Float2 _Point)
-        {
-            _Point[0] = _Point[0] / 10 - (panel_draw->Size.Width / 2 / 10);
-            _Point[1] = (_Point[1] / 10 - (panel_draw->Size.Height / 2 / 10));
-
-            return _Point;
-        }
-
-        Core::Math::Float2 CartesianToSystem(Core::Math::Float2 _Point)
-        {
-            _Point[0] = (_Point[0] + (panel_draw->Size.Width / 2 / 10)) * 10;
-            _Point[1] = ((_Point[1] + (panel_draw->Size.Height / 2 / 10)) * 10);
-
-            return _Point;
-        }
-
-private: System::Void ButtonAddPoint_Click(System::Object^  sender, System::EventArgs^  e) 
+    private: System::Void ButtonAddPoint_Click(System::Object^  sender, System::EventArgs^  e) 
          {
              // -----------------------------------------------------------------------------
              // modify point or add new one
@@ -536,10 +558,12 @@ private: System::Void ButtonAddPoint_Click(System::Object^  sender, System::Even
                  InsertPointsToList();
              }
          }
-private: System::Void SplineList_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+    private: System::Void SplineList_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) 
+         {
              InsertPointsToList();
          }
-private: System::Void ListPoints_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+    private: System::Void ListPoints_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) 
+         {
              if (ListPoints->SelectedIndex != -1)
              {
                  String^ ValuePair = ListPoints->SelectedItem->ToString();
@@ -550,7 +574,8 @@ private: System::Void ListPoints_SelectedIndexChanged(System::Object^  sender, S
                  BoxY->Text = System::Convert::ToString(NewPoint[1]);
              }
          }
-private: System::Void panel_draw_SizeChanged(System::Object^  sender, System::EventArgs^  e) {
+    private: System::Void panel_draw_Resize(System::Object^  sender, System::EventArgs^  e) 
+         {
              DrawSpline();
          }
 };
