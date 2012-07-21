@@ -77,6 +77,7 @@ namespace app_cubic_spline
 		/// </summary>
 		void InitializeComponent(void)
 		{
+            System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
             this->panel_draw = (gcnew System::Windows::Forms::Panel());
             this->SplineList = (gcnew System::Windows::Forms::ListBox());
             this->LabelSpline = (gcnew System::Windows::Forms::Label());
@@ -245,7 +246,7 @@ namespace app_cubic_spline
             this->Controls->Add(this->LabelSpline);
             this->Controls->Add(this->BoxY);
             this->Controls->Add(this->ButtonAddPoint);
-            this->MaximumSize = System::Drawing::Size(1680, 1050);
+            this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
             this->MinimumSize = System::Drawing::Size(640, 480);
             this->Name = L"Form1";
             this->Text = L"Kubische Spline Interpolation";
