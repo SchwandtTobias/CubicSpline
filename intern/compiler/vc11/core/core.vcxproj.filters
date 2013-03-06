@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Math">
+      <UniqueIdentifier>{4b58aac9-d0a2-4f86-87a3-95c33d8020df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{9900324b-7901-44dc-92ac-0a2dec3c8688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Algorithm">
+      <UniqueIdentifier>{fe7c919f-b8a9-441f-9682-95192880bbea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Algebra">
+      <UniqueIdentifier>{3647af68-751e-4ec8-9b6f-58e3cbbea26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Analysis">
+      <UniqueIdentifier>{6fb8b90f-c296-4214-b8e7-0e2623fee8e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\inc\core\search_text.h">
+      <Filter>Text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\math_defines.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\cubic_spline.h">
+      <Filter>Math\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\matrix.h">
+      <Filter>Math\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\vector2.h">
+      <Filter>Math\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\vector.h">
+      <Filter>Math\Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\inc\core\function.h">
+      <Filter>Math\Analysis</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\core\search_text.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\cubic_spline.cpp">
+      <Filter>Math\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\core\function.cpp">
+      <Filter>Math\Analysis</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
